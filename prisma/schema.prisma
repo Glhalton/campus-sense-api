@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,4 +5,185 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model Campus {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  adress      String
+  latitude    Decimal
+  longitude   Decimal
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  buildings   Building[]
+  maps        Map[]
+
+  @@map("campi")
+}
+
+model Building {
+  id          Int      @id @default(autoincrement())
+  campusId    Int      @map("campus_id")
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  campus Campus @relation(fields: [campusId], references: [id])
+
+  floors Floor[]
+  maps   Map[]
+
+  @@map("buildings")
+}
+
+model Floor {
+  id         Int      @id @default(autoincrement())
+  buildingId Int      @map("building_id")
+  name       String
+  number     String
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  building Building @relation(fields: [buildingId], references: [id])
+  rooms    Room[]
+  maps     Map[]
+
+  @@map("floors")
+}
+
+model Room {
+  id            Int      @id @default(autoincrement())
+  floorId       Int      @map("floor_id")
+  mapLocationId Int      @map("map_location_id")
+  name          String
+  roomTypeId    Int      @map("room_type_id")
+  capacity      Int
+  latitude      Decimal?
+  longitude     Decimal?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  floor          Floor           @relation(fields: [floorId], references: [id])
+  roomType       RoomType        @relation(fields: [roomTypeId], references: [id])
+  classSchedules ClassSchedule[]
+
+  @@map("rooms")
+}
+
+model RoomType {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  rooms       Room[]
+
+  @@map("room_types")
+}
+
+model Map {
+  id          Int      @id @default(autoincrement())
+  campusId    Int      @map("campus_id")
+  buildingId  Int?     @map("building_id")
+  floorId     Int?     @map("floor_id")
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  campus       Campus        @relation(fields: [campusId], references: [id])
+  building     Building?     @relation(fields: [buildingId], references: [id])
+  floor        Floor?        @relation(fields: [floorId], references: [id])
+  mapLocations MapLocation[]
+
+  @@map("maps")
+}
+
+model MapLocation {
+  id        Int      @id @default(autoincrement())
+  mapId     Int      @map("map_id")
+  name      String
+  x         Decimal
+  y         Decimal
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  map Map @relation(fields: [mapId], references: [id])
+
+  @@map("map_locations")
+}
+
+model Course {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  subjects    Subject[]
+
+  @@map("courses")
+}
+
+model Subject {
+  id          Int      @id @default(autoincrement())
+  courseId    Int      @map("course_id")
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@map("subjects")
+}
+
+model classGroup {
+  id       Int     @id @default(autoincrement())
+  semester Int
+  year     Int
+  isActive Boolean @default(true) @map("is_active")
+
+  @@map("class_groups")
+}
+
+model Professor {
+  id        Int     @id @default(autoincrement())
+  name      String
+  email     String
+  telephone String?
+
+  @@map("professors")
+}
+
+model ClassSchedule {
+  id           Int      @id @default(autoincrement())
+  classGroupId Int      @map("class_group_id")
+  roomId       Int      @map("room_id")
+  dayOfWeek    String   @map("day_of_week")
+  startTime    DateTime @db.Time(0)
+  endTime      DateTime @db.Time(0)
+
+  room Room @relation(fields: [roomId], references: [id])
+
+  @@map("class_schedules")
+}
+
+model ClassSession {
+  id              Int                @id @default(autoincrement())
+  classScheduleId Int                @map("class_schedule_id")
+  date            DateTime           @db.Date
+  status          ClassSessionStatus
+  startTime       DateTime           @db.Time(0)
+  endTime         DateTime           @db.Time(0)
+
+  @@map("class_sessions")
+}
+
+enum ClassSessionStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }
