@@ -15,8 +15,10 @@ export class ClassSessionsService {
     return this.prisma.classSession.findMany({});
   }
 
-  findOne(id: number) {
-    const classSession = this.prisma.classSession.findUnique({ where: { id } });
+  async findOne(id: number) {
+    const classSession = await this.prisma.classSession.findUnique({
+      where: { id },
+    });
 
     if (!classSession) {
       throw new NotFoundException(`Sessão de aula com id ${id} não encontrado`);
@@ -25,14 +27,18 @@ export class ClassSessionsService {
     return classSession;
   }
 
-  update(id: number, updateClassSessionDto: UpdateClassSessionDto) {
+  async update(id: number, updateClassSessionDto: UpdateClassSessionDto) {
+    await this.findOne(id);
+
     return this.prisma.classSession.update({
       where: { id },
       data: updateClassSessionDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.classSession.delete({ where: { id } });
   }
 }

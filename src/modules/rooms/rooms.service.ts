@@ -16,7 +16,7 @@ export class RoomsService {
   }
 
   async findOne(id: number) {
-    const room = this.prisma.room.findUnique({ where: { id } });
+    const room = await this.prisma.room.findUnique({ where: { id } });
 
     if (!room) {
       throw new NotFoundException(`Sala com id ${id} não encontrada`);
@@ -25,11 +25,15 @@ export class RoomsService {
     return room;
   }
 
-  update(id: number, updateRoomDto: UpdateRoomDto) {
+  async update(id: number, updateRoomDto: UpdateRoomDto) {
+    await this.findOne(id);
+
     return this.prisma.room.update({ where: { id }, data: updateRoomDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.room.delete({ where: { id } });
   }
 }

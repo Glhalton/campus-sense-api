@@ -16,7 +16,7 @@ export class FloorsService {
   }
 
   async findOne(id: number) {
-    const floor = this.prisma.floor.findUnique({ where: { id } });
+    const floor = await this.prisma.floor.findUnique({ where: { id } });
 
     if (!floor) {
       throw new NotFoundException(`Andar com id ${id} não encontrado`);
@@ -25,11 +25,15 @@ export class FloorsService {
     return floor;
   }
 
-  update(id: number, updateFloorDto: UpdateFloorDto) {
+  async update(id: number, updateFloorDto: UpdateFloorDto) {
+    await this.findOne(id);
+
     return this.prisma.floor.update({ where: { id }, data: updateFloorDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.floor.delete({ where: { id } });
   }
 }

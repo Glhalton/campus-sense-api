@@ -16,7 +16,7 @@ export class BuildingsService {
   }
 
   async findOne(id: number) {
-    const building = this.prisma.building.findUnique({ where: { id } });
+    const building = await this.prisma.building.findUnique({ where: { id } });
 
     if (!building) {
       throw new NotFoundException(`Construção com id ${id} não encontrado`);
@@ -25,14 +25,18 @@ export class BuildingsService {
     return building;
   }
 
-  update(id: number, updateBuildingDto: UpdateBuildingDto) {
+  async update(id: number, updateBuildingDto: UpdateBuildingDto) {
+    await this.findOne(id);
+
     return this.prisma.building.update({
       where: { id },
       data: updateBuildingDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.building.delete({ where: { id } });
   }
 }
