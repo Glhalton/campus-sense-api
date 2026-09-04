@@ -10,6 +10,7 @@ import { MapLocationsModule } from './modules/map-locations/map-locations.module
 import { CoursesModule } from './modules/courses/courses.module.js';
 import { SubjectsModule } from './modules/subjects/subjects.module.js';
 import { ClassGroupsModule } from './modules/class-groups/class-groups.module.js';
+import { ClassSchedulesModule } from './modules/class-schedules/class-schedules.module.js';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ClassGroupsModule } from './modules/class-groups/class-groups.module.js
     CoursesModule,
     SubjectsModule,
     ClassGroupsModule,
+    ClassSchedulesModule,
   ],
 })
 export class AppModule {}
