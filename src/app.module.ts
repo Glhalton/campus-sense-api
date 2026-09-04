@@ -8,6 +8,7 @@ import { FloorsModule } from './modules/floors/floors.module.js';
 import { BuildingsModule } from './modules/buildings/buildings.module.js';
 import { MapLocationsModule } from './modules/map-locations/map-locations.module.js';
 import { CoursesModule } from './modules/courses/courses.module.js';
+import { SubjectsModule } from './modules/subjects/subjects.module.js';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CoursesModule } from './modules/courses/courses.module.js';
     MapsModule,
     MapLocationsModule,
     CoursesModule,
+    SubjectsModule,
   ],
 })
 export class AppModule {}
