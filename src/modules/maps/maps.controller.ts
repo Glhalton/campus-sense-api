@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MapsService } from './maps.service.js';
 import { CreateMapDto } from './dto/create-map.dto.js';
 import { UpdateMapDto } from './dto/update-map.dto.js';
