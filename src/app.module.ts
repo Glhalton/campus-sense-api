@@ -6,6 +6,7 @@ import { MapsModule } from './modules/maps/maps.module.js';
 import { RoomsModule } from './modules/rooms/rooms.module.js';
 import { FloorsModule } from './modules/floors/floors.module.js';
 import { BuildingsModule } from './modules/buildings/buildings.module.js';
+import { MapLocationsModule } from './modules/map-locations/map-locations.module.js';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BuildingsModule } from './modules/buildings/buildings.module.js';
     FloorsModule,
     RoomsModule,
     MapsModule,
+    MapLocationsModule,
   ],
 })
 export class AppModule {}
