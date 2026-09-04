@@ -9,6 +9,7 @@ import { BuildingsModule } from './modules/buildings/buildings.module.js';
 import { MapLocationsModule } from './modules/map-locations/map-locations.module.js';
 import { CoursesModule } from './modules/courses/courses.module.js';
 import { SubjectsModule } from './modules/subjects/subjects.module.js';
+import { ClassGroupsModule } from './modules/class-groups/class-groups.module.js';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SubjectsModule } from './modules/subjects/subjects.module.js';
     MapLocationsModule,
     CoursesModule,
     SubjectsModule,
+    ClassGroupsModule,
   ],
 })
 export class AppModule {}
