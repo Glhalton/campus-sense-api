@@ -1,0 +1,38 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateClassSessionDto } from './dto/create-class-session.dto.js';
+import { UpdateClassSessionDto } from './dto/update-class-session.dto.js';
+import { PrismaService } from '../../database/prisma.service.js';
+
+@Injectable()
+export class ClassSessionsService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(createClassSessionDto: CreateClassSessionDto) {
+    return this.prisma.classSession.create({ data: createClassSessionDto });
+  }
+
+  findAll() {
+    return this.prisma.classSession.findMany({});
+  }
+
+  findOne(id: number) {
+    const classSession = this.prisma.classSession.findUnique({ where: { id } });
+
+    if (!classSession) {
+      throw new NotFoundException(`Sessão de aula com id ${id} não encontrado`);
+    }
+
+    return classSession;
+  }
+
+  update(id: number, updateClassSessionDto: UpdateClassSessionDto) {
+    return this.prisma.classSession.update({
+      where: { id },
+      data: updateClassSessionDto,
+    });
+  }
+
+  remove(id: number) {
+    return this.prisma.classSession.delete({ where: { id } });
+  }
+}
