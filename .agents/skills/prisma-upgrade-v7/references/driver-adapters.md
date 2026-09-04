@@ -147,7 +147,7 @@ const prisma = new PrismaClient({
 ### SQL Server
 
 ```typescript
-import { PrismaClient } from '../generated/client'
+ } from '../generated/client'
 import { PrismaMssql } from '@prisma/adapter-mssql'
 
 const adapter = new PrismaMssql({
