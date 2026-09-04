@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ClassGroupsService } from './class-groups.service.js';
 import { CreateClassGroupDto } from './dto/create-class-group.dto.js';
 import { UpdateClassGroupDto } from './dto/update-class-group.dto.js';
@@ -23,7 +31,10 @@ export class ClassGroupsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClassGroupDto: UpdateClassGroupDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateClassGroupDto: UpdateClassGroupDto,
+  ) {
     return this.classGroupsService.update(+id, updateClassGroupDto);
   }
 
