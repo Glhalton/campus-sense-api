@@ -11,6 +11,7 @@ import { CoursesModule } from './modules/courses/courses.module.js';
 import { SubjectsModule } from './modules/subjects/subjects.module.js';
 import { ClassGroupsModule } from './modules/class-groups/class-groups.module.js';
 import { ClassSchedulesModule } from './modules/class-schedules/class-schedules.module.js';
+import { ClassSessionsModule } from './modules/class-sessions/class-sessions.module.js';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ClassSchedulesModule } from './modules/class-schedules/class-schedules.
     SubjectsModule,
     ClassGroupsModule,
     ClassSchedulesModule,
+    ClassSessionsModule,
   ],
 })
 export class AppModule {}
