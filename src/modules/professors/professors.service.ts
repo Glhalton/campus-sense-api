@@ -25,14 +25,18 @@ export class ProfessorsService {
     return professor;
   }
 
-  update(id: number, updateProfessorDto: UpdateProfessorDto) {
+  async update(id: number, updateProfessorDto: UpdateProfessorDto) {
+    await this.findOne(id);
+
     return this.prisma.professor.update({
       where: { id },
       data: updateProfessorDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.professor.delete({ where: { id } });
   }
 }

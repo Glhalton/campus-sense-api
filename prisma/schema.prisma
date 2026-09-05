@@ -11,7 +11,7 @@ model Campus {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  address     String
+  address      String
   latitude    Decimal
   longitude   Decimal
   createdAt   DateTime   @default(now()) @map("created_at")

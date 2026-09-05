@@ -27,14 +27,18 @@ export class ClassGroupsService {
     return classGroup;
   }
 
-  update(id: number, updateClassGroupDto: UpdateClassGroupDto) {
+  async update(id: number, updateClassGroupDto: UpdateClassGroupDto) {
+    await this.findOne(id);
+
     return this.prisma.classGroup.update({
       where: { id },
       data: updateClassGroupDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.classGroup.delete({ where: { id } });
   }
 }

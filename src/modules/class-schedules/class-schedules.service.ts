@@ -29,14 +29,18 @@ export class ClassSchedulesService {
     return classSchedule;
   }
 
-  update(id: number, updateClassScheduleDto: UpdateClassScheduleDto) {
+  async update(id: number, updateClassScheduleDto: UpdateClassScheduleDto) {
+    await this.findOne(id);
+
     return this.prisma.classSchedule.update({
       where: { id },
       data: updateClassScheduleDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.classSchedule.delete({ where: { id } });
   }
 }

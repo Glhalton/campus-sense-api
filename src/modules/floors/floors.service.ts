@@ -25,11 +25,15 @@ export class FloorsService {
     return floor;
   }
 
-  update(id: number, updateFloorDto: UpdateFloorDto) {
+  async update(id: number, updateFloorDto: UpdateFloorDto) {
+    await this.findOne(id);
+
     return this.prisma.floor.update({ where: { id }, data: updateFloorDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.floor.delete({ where: { id } });
   }
 }

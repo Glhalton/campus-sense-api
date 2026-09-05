@@ -27,14 +27,18 @@ export class ClassSessionsService {
     return classSession;
   }
 
-  update(id: number, updateClassSessionDto: UpdateClassSessionDto) {
+  async update(id: number, updateClassSessionDto: UpdateClassSessionDto) {
+    await this.findOne(id);
+
     return this.prisma.classSession.update({
       where: { id },
       data: updateClassSessionDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.classSession.delete({ where: { id } });
   }
 }

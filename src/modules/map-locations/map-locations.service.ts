@@ -27,14 +27,18 @@ export class MapLocationsService {
     return mapLocation;
   }
 
-  update(id: number, updateMapLocationDto: UpdateMapLocationDto) {
+  async update(id: number, updateMapLocationDto: UpdateMapLocationDto) {
+    await this.findOne(id);
+
     return this.prisma.mapLocation.update({
       where: { id },
       data: updateMapLocationDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.mapLocation.delete({ where: { id } });
   }
 }
