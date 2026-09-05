@@ -16,7 +16,7 @@ export class FloorsService {
   }
 
   async findOne(id: number) {
-    const floor = this.prisma.floor.findUnique({ where: { id } });
+    const floor = await this.prisma.floor.findUnique({ where: { id } });
 
     if (!floor) {
       throw new NotFoundException(`Andar com id ${id} não encontrado`);

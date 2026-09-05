@@ -16,7 +16,7 @@ export class BuildingsService {
   }
 
   async findOne(id: number) {
-    const building = this.prisma.building.findUnique({ where: { id } });
+    const building = await this.prisma.building.findUnique({ where: { id } });
 
     if (!building) {
       throw new NotFoundException(`Construção com id ${id} não encontrado`);

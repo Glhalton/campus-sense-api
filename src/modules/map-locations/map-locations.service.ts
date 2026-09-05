@@ -16,7 +16,9 @@ export class MapLocationsService {
   }
 
   async findOne(id: number) {
-    const mapLocation = this.prisma.mapLocation.findUnique({ where: { id } });
+    const mapLocation = await this.prisma.mapLocation.findUnique({
+      where: { id },
+    });
 
     if (!mapLocation) {
       throw new NotFoundException(`Local de mapa com id ${id} não encontrado`);

@@ -1,7 +1,7 @@
 export class CreateCampusDto {
   name: string;
   description: string;
-  adress: string;
+  address: string;
   latitude: number;
   longitude: number;
 }

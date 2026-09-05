@@ -15,8 +15,8 @@ export class ClassSchedulesService {
     return this.prisma.classSchedule.findMany({});
   }
 
-  findOne(id: number) {
-    const classSchedule = this.prisma.classSchedule.findUnique({
+  async findOne(id: number) {
+    const classSchedule = await this.prisma.classSchedule.findUnique({
       where: { id },
     });
 

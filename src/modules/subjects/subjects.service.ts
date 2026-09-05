@@ -16,7 +16,7 @@ export class SubjectsService {
   }
 
   async findOne(id: number) {
-    const subject = this.prisma.subject.findUnique({ where: { id } });
+    const subject = await this.prisma.subject.findUnique({ where: { id } });
 
     if (!subject) {
       throw new NotFoundException(`Disciplina com id ${id} não encontrada`);

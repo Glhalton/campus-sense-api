@@ -16,7 +16,7 @@ export class RoomsService {
   }
 
   async findOne(id: number) {
-    const room = this.prisma.room.findUnique({ where: { id } });
+    const room = await this.prisma.room.findUnique({ where: { id } });
 
     if (!room) {
       throw new NotFoundException(`Sala com id ${id} não encontrada`);

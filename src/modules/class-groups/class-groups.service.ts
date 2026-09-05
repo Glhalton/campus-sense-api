@@ -15,8 +15,10 @@ export class ClassGroupsService {
     return this.prisma.classGroup.findMany({});
   }
 
-  findOne(id: number) {
-    const classGroup = this.prisma.classGroup.findUnique({ where: { id } });
+  async findOne(id: number) {
+    const classGroup = await this.prisma.classGroup.findUnique({
+      where: { id },
+    });
 
     if (!classGroup) {
       throw new NotFoundException(`Turma com id ${id} não encontrada`);

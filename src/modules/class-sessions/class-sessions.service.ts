@@ -15,8 +15,10 @@ export class ClassSessionsService {
     return this.prisma.classSession.findMany({});
   }
 
-  findOne(id: number) {
-    const classSession = this.prisma.classSession.findUnique({ where: { id } });
+  async findOne(id: number) {
+    const classSession = await this.prisma.classSession.findUnique({
+      where: { id },
+    });
 
     if (!classSession) {
       throw new NotFoundException(`Sessão de aula com id ${id} não encontrado`);
