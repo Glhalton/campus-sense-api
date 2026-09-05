@@ -19,6 +19,7 @@ model Campus {
   buildings   Building[]
   maps        Map[]
 
+  @@unique([name])
   @@map("campi")
 }
 
@@ -35,6 +36,8 @@ model Building {
   floors Floor[]
   maps   Map[]
 
+  @@unique([name, campusId])
+  @@index([campusId])
   @@map("buildings")
 }
 
@@ -50,6 +53,8 @@ model Floor {
   rooms    Room[]
   maps     Map[]
 
+  @@unique([buildingId, number])
+  @@unique([buildingId, name])
   @@map("floors")
 }
 
@@ -67,8 +72,12 @@ model Room {
 
   floor          Floor           @relation(fields: [floorId], references: [id])
   roomType       RoomType        @relation(fields: [roomTypeId], references: [id])
+  mapLocation    MapLocation     @relation(fields: [mapLocationId], references: [id])
   classSchedules ClassSchedule[]
 
+  @@unique([floorId, name])
+  @@index([roomTypeId])
+  @@index([mapLocationId])
   @@map("rooms")
 }
 
@@ -80,6 +89,7 @@ model RoomType {
   updatedAt   DateTime @updatedAt @map("updated_at")
   rooms       Room[]
 
+  @@unique([name])
   @@map("room_types")
 }
 
@@ -98,6 +108,9 @@ model Map {
   floor        Floor?        @relation(fields: [floorId], references: [id])
   mapLocations MapLocation[]
 
+  @@unique([campusId, name])
+  @@index([buildingId])
+  @@index([floorId])
   @@map("maps")
 }
 
@@ -110,8 +123,10 @@ model MapLocation {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  map Map @relation(fields: [mapId], references: [id])
+  map   Map    @relation(fields: [mapId], references: [id])
+  rooms Room[]
 
+  @@unique([mapId, name])
   @@map("map_locations")
 }
 
@@ -123,60 +138,77 @@ model Course {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   subjects    Subject[]
 
+  @@unique([name])
   @@map("courses")
 }
 
 model Subject {
   id          Int    @id @default(autoincrement())
   courseId    Int    @map("course_id")
+  professorId Int    @map("professor_id")
   name        String
   description String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  course Course @relation(fields: [courseId], references: [id])
+  course         Course          @relation(fields: [courseId], references: [id])
+  professor      Professor       @relation(fields: [professorId], references: [id])
+  classSchedules ClassSchedule[]
 
+  @@unique([courseId, name])
+  @@index([professorId])
   @@map("subjects")
 }
 
-model classGroup {
+model ClassGroup {
   id       Int     @id @default(autoincrement())
   semester Int
   year     Int
   isActive Boolean @default(true) @map("is_active")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  classSchedules ClassSchedule[]
 
+  @@index([year, semester])
   @@map("class_groups")
 }
 
 model Professor {
   id        Int     @id @default(autoincrement())
   name      String
-  email     String
+  email     String  @unique
   telephone String?
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  subjects  Subject[]
 
   @@map("professors")
 }
 
 model ClassSchedule {
-  id           Int      @id @default(autoincrement())
-  classGroupId Int      @map("class_group_id")
-  roomId       Int      @map("room_id")
-  dayOfWeek    String   @map("day_of_week")
-  startTime    DateTime @db.Time(0)
-  endTime      DateTime @db.Time(0)
+  id           Int       @id @default(autoincrement())
+  classGroupId Int       @map("class_group_id")
+  subjectId    Int       @map("subject_id")
+  roomId       Int       @map("room_id")
+  dayOfWeek    DayOfWeek @map("day_of_week")
+  startTime    DateTime  @db.Time(0)
+  endTime      DateTime  @db.Time(0)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  room Room @relation(fields: [roomId], references: [id])
+  room       Room       @relation(fields: [roomId], references: [id])
+  classGroup ClassGroup @relation(fields: [classGroupId], references: [id])
+  subject    Subject    @relation(fields: [subjectId], references: [id])
 
+  classSessions ClassSession[]
+
+  @@unique([roomId, dayOfWeek, startTime])
+  @@index([classGroupId])
+  @@index([subjectId])
   @@map("class_schedules")
 }
 
@@ -191,7 +223,21 @@ model ClassSession {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  classSchedule ClassSchedule @relation(fields: [classScheduleId], references: [id])
+
+  @@unique([classScheduleId, date])
+  @@index([date])
   @@map("class_sessions")
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
 }
 
 enum ClassSessionStatus {
