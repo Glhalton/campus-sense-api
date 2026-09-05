@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { SubjectsService } from './subjects.service.js';
@@ -26,17 +27,20 @@ export class SubjectsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subjectsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.subjectsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
-    return this.subjectsService.update(+id, updateSubjectDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSubjectDto: UpdateSubjectDto,
+  ) {
+    return this.subjectsService.update(id, updateSubjectDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subjectsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.subjectsService.remove(id);
   }
 }

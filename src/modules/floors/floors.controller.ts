@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { FloorsService } from './floors.service.js';
@@ -26,17 +27,20 @@ export class FloorsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.floorsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.floorsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFloorDto: UpdateFloorDto) {
-    return this.floorsService.update(+id, updateFloorDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateFloorDto: UpdateFloorDto,
+  ) {
+    return this.floorsService.update(id, updateFloorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.floorsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.floorsService.remove(id);
   }
 }
