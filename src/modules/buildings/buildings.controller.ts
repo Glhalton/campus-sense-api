@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { BuildingsService } from './buildings.service.js';
@@ -26,20 +27,20 @@ export class BuildingsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.buildingsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.buildingsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateBuildingDto: UpdateBuildingDto,
   ) {
-    return this.buildingsService.update(+id, updateBuildingDto);
+    return this.buildingsService.update(id, updateBuildingDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.buildingsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.buildingsService.remove(id);
   }
 }

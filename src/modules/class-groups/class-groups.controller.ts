@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { ClassGroupsService } from './class-groups.service.js';
@@ -26,20 +27,20 @@ export class ClassGroupsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.classGroupsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.classGroupsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateClassGroupDto: UpdateClassGroupDto,
   ) {
-    return this.classGroupsService.update(+id, updateClassGroupDto);
+    return this.classGroupsService.update(id, updateClassGroupDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.classGroupsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.classGroupsService.remove(id);
   }
 }

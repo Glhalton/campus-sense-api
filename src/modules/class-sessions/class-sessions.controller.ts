@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { ClassSessionsService } from './class-sessions.service.js';
@@ -26,20 +27,20 @@ export class ClassSessionsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.classSessionsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.classSessionsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateClassSessionDto: UpdateClassSessionDto,
   ) {
-    return this.classSessionsService.update(+id, updateClassSessionDto);
+    return this.classSessionsService.update(id, updateClassSessionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.classSessionsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.classSessionsService.remove(id);
   }
 }

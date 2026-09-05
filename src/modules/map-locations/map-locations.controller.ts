@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { MapLocationsService } from './map-locations.service.js';
@@ -26,20 +27,20 @@ export class MapLocationsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mapLocationsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.mapLocationsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateMapLocationDto: UpdateMapLocationDto,
   ) {
-    return this.mapLocationsService.update(+id, updateMapLocationDto);
+    return this.mapLocationsService.update(id, updateMapLocationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mapLocationsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.mapLocationsService.remove(id);
   }
 }

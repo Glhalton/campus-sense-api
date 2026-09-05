@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { ClassSchedulesService } from './class-schedules.service.js';
@@ -26,20 +27,20 @@ export class ClassSchedulesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.classSchedulesService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.classSchedulesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateClassScheduleDto: UpdateClassScheduleDto,
   ) {
-    return this.classSchedulesService.update(+id, updateClassScheduleDto);
+    return this.classSchedulesService.update(id, updateClassScheduleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.classSchedulesService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.classSchedulesService.remove(id);
   }
 }
