@@ -16,7 +16,7 @@ export class SubjectsService {
   }
 
   async findOne(id: number) {
-    const subject = this.prisma.subject.findUnique({ where: { id } });
+    const subject = await this.prisma.subject.findUnique({ where: { id } });
 
     if (!subject) {
       throw new NotFoundException(`Disciplina com id ${id} não encontrada`);
@@ -25,14 +25,18 @@ export class SubjectsService {
     return subject;
   }
 
-  update(id: number, updateSubjectDto: UpdateSubjectDto) {
+  async update(id: number, updateSubjectDto: UpdateSubjectDto) {
+    await this.findOne(id);
+
     return this.prisma.subject.update({
       where: { id },
       data: updateSubjectDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.subject.delete({ where: { id } });
   }
 }

@@ -16,7 +16,7 @@ export class MapsService {
   }
 
   async findOne(id: number) {
-    const map = this.prisma.map.findUnique({ where: { id } });
+    const map = await this.prisma.map.findUnique({ where: { id } });
 
     if (!map) {
       throw new NotFoundException(`Mapa com id ${id} não encontrado`);
@@ -25,11 +25,15 @@ export class MapsService {
     return map;
   }
 
-  update(id: number, updateMapDto: UpdateMapDto) {
+  async update(id: number, updateMapDto: UpdateMapDto) {
+    await this.findOne(id);
+
     return this.prisma.map.update({ where: { id }, data: updateMapDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.map.delete({ where: { id } });
   }
 }

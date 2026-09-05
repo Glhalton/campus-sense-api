@@ -16,7 +16,7 @@ export class CampusService {
   }
 
   async findOne(id: number) {
-    const campus = this.prisma.campus.findUnique({ where: { id } });
+    const campus = await this.prisma.campus.findUnique({ where: { id } });
 
     if (!campus) {
       throw new NotFoundException(`Campus com id ${id} não encontrado`);
@@ -25,11 +25,15 @@ export class CampusService {
     return campus;
   }
 
-  update(id: number, updateCampusDto: UpdateCampusDto) {
+  async update(id: number, updateCampusDto: UpdateCampusDto) {
+    await this.findOne(id);
+
     return this.prisma.campus.update({ where: { id }, data: updateCampusDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
+
     return this.prisma.campus.delete({ where: { id } });
   }
 }

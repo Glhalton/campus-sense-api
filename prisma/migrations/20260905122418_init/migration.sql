@@ -6,7 +6,7 @@ CREATE TABLE "campi" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "adress" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "latitude" DECIMAL(65,30) NOT NULL,
     "longitude" DECIMAL(65,30) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -32,7 +32,7 @@ CREATE TABLE "floors" (
     "id" SERIAL NOT NULL,
     "building_id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
-    "number" TEXT NOT NULL,
+    "number" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -122,6 +122,8 @@ CREATE TABLE "class_groups" (
     "semester" INTEGER NOT NULL,
     "year" INTEGER NOT NULL,
     "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "class_groups_pkey" PRIMARY KEY ("id")
 );
@@ -132,6 +134,8 @@ CREATE TABLE "professors" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "telephone" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "professors_pkey" PRIMARY KEY ("id")
 );
@@ -144,6 +148,8 @@ CREATE TABLE "class_schedules" (
     "day_of_week" TEXT NOT NULL,
     "startTime" TIME(0) NOT NULL,
     "endTime" TIME(0) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "class_schedules_pkey" PRIMARY KEY ("id")
 );
@@ -153,9 +159,11 @@ CREATE TABLE "class_sessions" (
     "id" SERIAL NOT NULL,
     "class_schedule_id" INTEGER NOT NULL,
     "date" DATE NOT NULL,
-    "status" "ClassSessionStatus" NOT NULL,
+    "status" "ClassSessionStatus" NOT NULL DEFAULT 'SCHEDULED',
     "startTime" TIME(0) NOT NULL,
     "endTime" TIME(0) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "class_sessions_pkey" PRIMARY KEY ("id")
 );
